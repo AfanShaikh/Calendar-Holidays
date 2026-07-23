@@ -1,12 +1,17 @@
-// importing json-server library
 const jsonServer = require("json-server");
-const server = jsonServer.create();
+const auth = require("json-server-auth");
+
+const app = jsonServer.create();
 const router = jsonServer.router("db.json");
+
+app.db = router.db;
+
 const middlewares = jsonServer.defaults();
-const port = process.env.PORT || 3001; // you can use any port number here; i chose to use 3001
 
-server.use(middlewares);
-server.use(router);
+app.use(middlewares);
+app.use(auth);
+app.use(router);
 
-server.listen(port);
-// npx json-server --watch db.json --port 3001
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});
